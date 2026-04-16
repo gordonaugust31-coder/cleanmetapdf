@@ -239,7 +239,7 @@ def format_meta_display(meta: dict, keys=None):
 
 # ─── UI ───
 st.markdown('<div class="main-title">🛡️ CleanMeta</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Заміна та очистка метаданих PDF, DOCX, XLSX, PPTX, ODT — захист від конкурентів</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Заміна та очистка метаданих PDF, DOCX, XLSX, PPTX, ODT</div>', unsafe_allow_html=True)
 
 if not check_exiftool():
     st.error("⚠️ **exiftool** не знайдено! Встанови: `brew install exiftool` або `sudo apt install libimage-exiftool-perl`")
@@ -298,7 +298,8 @@ with tab_single:
                 st.download_button(
                     label=f"⬇️ Завантажити {uploaded.name}",
                     data=f.read(),
-                    file_name=f"clean_{uploaded.name}",
+                    prefix = str(random.randint(100, 999))
+                    file_name=f"{prefix}_{uploaded.name}",
                     mime="application/octet-stream",
                     use_container_width=True,
                 )
@@ -349,16 +350,16 @@ with tab_batch:
                 st.markdown(f"- {label} · {r['date']}")
 
             # ZIP архів
-            zip_path = os.path.join(tmpdir, "clean_files.zip")
+            zip_path = os.path.join(tmpdir, "documents.zip")
             with zipfile.ZipFile(zip_path, "w") as zf:
                 for r in results:
-                    zf.write(r["path"], f"clean_{r['name']}")
+                    zf.write(r["path"], f"{random.randint(100,999)}_{r['name']}")
 
             with open(zip_path, "rb") as f:
                 st.download_button(
                     label=f"⬇️ Завантажити всі ({len(results)} файлів) .zip",
                     data=f.read(),
-                    file_name="clean_files.zip",
+                    file_name="documents.zip",
                     mime="application/zip",
                     use_container_width=True,
                 )
@@ -378,7 +379,6 @@ with st.sidebar:
 - Код відкритий — можеш перевірити
     """)
     st.markdown("---")
-    st.markdown("Зроблено для захисту від конкурентів")
 
 # ─── Інфо ───
 with st.expander("ℹ️ Що саме змінюється?"):
