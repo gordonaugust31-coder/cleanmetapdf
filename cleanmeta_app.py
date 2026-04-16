@@ -294,11 +294,11 @@ with tab_single:
                 )
 
             # Завантаження
+            prefix = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=3))
             with open(tmp_path, "rb") as f:
                 st.download_button(
                     label=f"⬇️ Завантажити {uploaded.name}",
                     data=f.read(),
-                    prefix = str(random.randint(100, 999))
                     file_name=f"{prefix}_{uploaded.name}",
                     mime="application/octet-stream",
                     use_container_width=True,
@@ -353,7 +353,8 @@ with tab_batch:
             zip_path = os.path.join(tmpdir, "documents.zip")
             with zipfile.ZipFile(zip_path, "w") as zf:
                 for r in results:
-                    zf.write(r["path"], f"{random.randint(100,999)}_{r['name']}")
+                    bp = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=3))
+                    zf.write(r["path"], f"{bp}_{r['name']}")
 
             with open(zip_path, "rb") as f:
                 st.download_button(
